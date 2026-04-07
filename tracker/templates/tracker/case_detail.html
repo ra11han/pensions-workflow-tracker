@@ -1,0 +1,62 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-start">
+    <div>
+      <h2>{{ case.reference }} - {{ case.title }}</h2>
+      <p class="text-muted">Created by {{ case.created_by.username }} | Updated {{ case.updated_at|date:'Y-m-d H:i' }}</p>
+    </div>
+    <div>
+      <a class="btn btn-outline-primary" href="{% url 'case_update' case.pk %}">Edit</a>
+      {% if user.is_staff %}
+        <a class="btn btn-outline-danger" href="{% url 'case_delete' case.pk %}">Delete</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item"><strong>Status:</strong> {{ case.status.name }}</li>
+        <li class="list-group-item"><strong>Priority:</strong> {{ case.priority }}</li>
+        <li class="list-group-item"><strong>Scheme:</strong> {% if case.scheme %}{{ case.scheme }}{% else %}-{% endif %}</li>
+        <li class="list-group-item"><strong>Assigned to:</strong> {% if case.assigned_to %}{{ case.assigned_to.username }}{% else %}-{% endif %}</li>
+        <li class="list-group-item"><strong>Due date:</strong> {% if case.due_date %}{{ case.due_date }}{% else %}-{% endif %}</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5>Description</h5>
+          <p>{{ case.description|linebreaks }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <h5>Add note</h5>
+      <form method="post">
+        {% csrf_token %}
+        {{ note_form.as_p }}
+        <button class="btn btn-primary" type="submit">Add note</button>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <h5>Notes</h5>
+      <ul class="list-group">
+        {% for n in case.notes.all %}
+          <li class="list-group-item">
+            <div class="small text-muted">{{ n.created_at|date:'Y-m-d H:i' }} by {{ n.created_by.username }}</div>
+            <div>{{ n.note|linebreaks }}</div>
+          </li>
+        {% empty %}
+          <li class="list-group-item">No notes yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

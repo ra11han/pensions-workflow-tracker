@@ -1,0 +1,8 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+<div class="container" style="max-width: 720px;">
+  <h2 class="mt-4">Logged out</h2>
+  <p>You have been logged out.</p>
+  <a class="btn btn-primary" href="{% url 'login' %}">Log in again</a>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'tracker/base.html' %} {% block content %}
+<div class="container mt-4">
+  <h2>Dashboard</h2>
+
+  <div class="row mt-3">
+    <div class="col-md-4">
+      <div class="card" data-bs-toggle="tooltip" data-bs-placement="top" title="Open cases that currently have a due date set.">
+        <div class="card-body">
+          <h5 class="card-title" data-bs-toggle="tooltip" data-bs-placement="top" title="This count matches the due-date focus on this dashboard.">Open cases with due date</h5>
+          <p class="display-6">{{ open_cases }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card" data-bs-toggle="tooltip" data-bs-placement="top" title="Number of open cases marked as High priority.">
+        <div class="card-body">
+          <h5 class="card-title">High priority open</h5>
+          <p class="display-6">{{ high_priority }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card" data-bs-toggle="tooltip" data-bs-placement="top" title="Quick actions to browse or add cases.">
+        <div class="card-body">
+          <h5 class="card-title">Quick links</h5>
+          <a class="btn btn-outline-primary" href="{% url 'case_list' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Open the full list of cases with filters."
+            >View cases</a
+          >
+          <a class="btn btn-primary" href="{% url 'case_create' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Create a new workflow case."
+            >Create case</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <h5 data-bs-toggle="tooltip" data-bs-placement="top" title="Open cases with due dates, ordered by the nearest due date.">Due soon (next {{ due_soon_limit }})</h5>
+      <ul class="list-group">
+        {% for c in due_soon %}
+        <li class="list-group-item d-flex justify-content-between">
+          <a href="{% url 'case_detail' c.pk %}"
+            >{{ c.reference }} - {{ c.title }}</a
+          >
+          <span class="text-muted">{{ c.due_date }}</span>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No due dates set.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-md-6">
+      <h5 data-bs-toggle="tooltip" data-bs-placement="top" title="Breakdown of all cases grouped by status.">Cases by status</h5>
+      <ul class="list-group">
+        {% for row in by_status %}
+        <li class="list-group-item d-flex justify-content-between">
+          <span>{{ row.status__name }}</span>
+          <span class="badge bg-secondary">{{ row.total }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
