@@ -78,15 +78,3 @@ Alternatively, you can deploy using the included `render.yaml` blueprint file (s
 
 - Create an admin user locally with `python manage.py createsuperuser`.
 - In Render, you can create a superuser using the Render shell, as described in Render’s Django guide.
-
-## Evidence for assignment
-
-Take screenshots of:
-
-- Successful Render deployment logs and live URL
-- Login/register
-- Case list with filters
-- Case create/edit
-- Case detail + notes
-- Admin pages (status/scheme management)
-- Tests or at least test plan evidence
